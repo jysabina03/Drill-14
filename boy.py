@@ -291,11 +291,18 @@ class Boy:
     def draw(self):
         # sx = server.background.cw // 2
         # sy = server.background.ch // 2
+        #bb = self.get_bb()
+        #sbbx = bb[0] - server.background.window_left
+        #sbby = bb[1] - server.background.window_bottom
+        #draw_rectangle(sbbx, sbby,sbbx+40,sbby+100)
+
         sx = self.x - server.background.window_left
         sy = self.y - server.background.window_bottom
         self.image.clip_draw(
             int(self.frame) * 100, self.action * 100, 100, 100, sx, sy
         )
+        self.font.draw(sx - 10, sy + 60, f'{self.ball_count}', (0, 0, 255))
+
         # fill here
         pass
 
@@ -303,4 +310,6 @@ class Boy:
         return self.x - 20, self.y - 50, self.x + 20, self.y + 50
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'boy:ball':
+            self.ball_count += 1
+        print(self.ball_count)

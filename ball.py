@@ -3,6 +3,8 @@ import game_world
 import game_framework
 import random
 
+import server
+
 
 class Ball:
     image = None
@@ -14,8 +16,14 @@ class Ball:
         self.y = y if y else random.randint(100, 924)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        #self.image.draw(self.x, self.y)
+        #bb = self.get_bb()
+        #sbbx = bb[0] -server.background.window_left
+        #sbby = bb[1] - server.background.window_bottom
+        #draw_rectangle(sbbx, sbby,sbbx+20,sbby+20)
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        self.image.draw(sx, sy)
 
     def update(self):
         pass
@@ -24,4 +32,6 @@ class Ball:
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     def handle_collision(self, group, other):
-        pass
+        match group:
+            case 'boy:ball':
+                game_world.remove_object(self)
